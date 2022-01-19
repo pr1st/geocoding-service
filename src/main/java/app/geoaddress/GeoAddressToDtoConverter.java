@@ -12,11 +12,11 @@ public class GeoAddressToDtoConverter implements Converter<GeoAddress, GeoAddres
     @Override
     public GeoAddressDto convert(GeoAddress source) {
         var geoAddressDto = new GeoAddressDto(
-                new GeoAddressDto.Address(source.address().string()),
+                new GeoAddressDto.Address(source.address().fullName()),
                 new GeoAddressDto.Coordinates(source.coordinates().x(), source.coordinates().y())
         );
 
-        if (log.isDebugEnabled()) log.debug("Converting: " + source + "\t + -> + " + geoAddressDto);
+        if (log.isDebugEnabled()) log.debug("Converting: " + source + " ->  " + geoAddressDto);
 
         return geoAddressDto;
     }

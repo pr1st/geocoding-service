@@ -13,12 +13,15 @@ public class GeoCodingGoogleService implements GeoCodingService {
             Map.of(
                     new GeoAddress.Address("single"), new GeoAddress.Coordinates(1.0, 0.0),
                     new GeoAddress.Address("b2"), new GeoAddress.Coordinates(1.2, 3123.3123),
-                    new GeoAddress.Address("base"), new GeoAddress.Coordinates(1.0, 1.0)
+                    new GeoAddress.Address("base"), new GeoAddress.Coordinates(1.1, 1.1)
             );
 
     @Override
     public GeoAddress getAddressFromCoordinates(GeoAddress.Coordinates coordinates) {
-        throw new UnsupportedOperationException("not implemented");
+        var first = map.entrySet().stream().filter(i -> i.getValue().equals(coordinates)).findFirst();
+        if (first.isEmpty()) throw new GeoAddressNotFoundException(coordinates.toString());
+
+        return GeoAddress.of(first.get().getKey(), first.get().getValue());
     }
 
     @Override
@@ -26,6 +29,6 @@ public class GeoCodingGoogleService implements GeoCodingService {
         var coordinates = map.get(address);
         if (coordinates == null) throw new GeoAddressNotFoundException(address.toString());
 
-        return new GeoAddress(null, address, coordinates);
+        return GeoAddress.of(address, coordinates);
     }
 }

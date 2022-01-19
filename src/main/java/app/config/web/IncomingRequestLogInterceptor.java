@@ -1,4 +1,4 @@
-package app.common;
+package app.config.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,7 +15,7 @@ public class IncomingRequestLogInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (log.isDebugEnabled()) {
-            log.debug("Incoming request: " + request.getMethod() + request.getRequestURI());
+            log.debug("Incoming request: " + request.getMethod() + " " + request.getRequestURL());
         }
          return true;
     }

@@ -20,24 +20,29 @@ public class GeoAddressService {
     }
 
     public GeoAddress getGeoAddressByCoordinates(GeoAddress.Coordinates coordinates) {
-        var found = geoAddressRepository.findGeoAddressByCoordinates(coordinates);
-        if (log.isDebugEnabled()) log.debug("Cache hit on: " + coordinates);
-        if (found.isPresent()) return found.get();
+        var found = geoAddressRepository.findGeoAddressByCoordinatesXAndCoordinatesY(coordinates.x(), coordinates.y());
+        if (!found.isEmpty()) {
+            if (log.isInfoEnabled()) log.info("Cache hit on: " + coordinates);
+            return found.get(0);
+        }
 
         var requested = geoCodingService.getAddressFromCoordinates(coordinates);
-        geoAddressRepository.save(requested);
-        if (log.isDebugEnabled()) log.debug("Saved to cache: " + requested);
+        requested = geoAddressRepository.save(requested);
+        if (log.isInfoEnabled()) log.info("Saved to cache: " + requested);
         return requested;
     }
 
     public GeoAddress getGeoAddressByAddressString(GeoAddress.Address address) {
-        var found = geoAddressRepository.findGeoAddressByAddress(address);
-        if (log.isDebugEnabled()) log.debug("Cache hit on: " + address);
-        if (found.isPresent()) return found.get();
+        var found = geoAddressRepository.findGeoAddressByAddressFullName(address.fullName());
+        if (!found.isEmpty()) {
+            if (log.isInfoEnabled()) log.info("Cache hit on: " + address);
+            return found.get(0);
+        }
+
 
         var requested = geoCodingService.getCoordinatesFromAddress(address);
-        geoAddressRepository.save(requested);
-        if (log.isDebugEnabled()) log.debug("Saved to cache: " + requested);
+        requested = geoAddressRepository.save(requested);
+        if (log.isInfoEnabled()) log.info("Saved to cache: " + requested);
         return requested;
     }
 }
