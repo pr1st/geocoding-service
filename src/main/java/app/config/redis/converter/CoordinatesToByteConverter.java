@@ -7,9 +7,6 @@ import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Component;
 
-import java.nio.ByteBuffer;
-import java.util.Map;
-
 @Component
 @WritingConverter
 public class CoordinatesToByteConverter implements Converter<GeoAddress.Coordinates, byte[]>{
